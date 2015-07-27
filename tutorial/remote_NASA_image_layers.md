@@ -8,9 +8,9 @@ layout: tutorial
 
 NASA provides a wealth of image layers for free ''Steve adds the intro''.  These layers are available through their [GIBS (Global Imagery Browse Services) website](https://earthdata.nasa.gov/about/science-system-description/eosdis-components/global-imagery-browse-services-gibs).
 
-You'll need to have done the [Remote Image Layer](remote_image_layer.html) tutorial.  Open your HelloEarth project and get ready.
+You'll need to have done the [Remote Image Layer]({{ site.baseurl }}/remote_image_layer.html) tutorial.  Open your HelloEarth project and get ready.
 
-![Xcode ViewController.m](https://github.com/CPLamb/WhirlyGlobe-Maply-Site/blob/gh-pages/images/tutorial/NASA_GIBS_Header.png)
+![Xcode ViewController.m]({{ site.baseurl }}/images/tutorial/NASA_GIBS_Header.png)
 
 If you haven't got one here is a suitable [ViewController.m]({{ site.baseurl }}/tutorial/code/ViewController_vector_selection.m) file to start with.  This version has a remote image layer already configured and it makes a nice starting point.
 
