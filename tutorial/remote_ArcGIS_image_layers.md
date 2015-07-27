@@ -4,17 +4,17 @@ layout: tutorial
 ---
 
 
-### WG Tutorial draft - ArcGIS Vector Layers
+### Remote ArcGIS Vector Layers
 
 ESRI's ArcGIS platform has a huge number of datasets, as well as the ability to generate your own thru the ArcGIS application.  Here are a few examples of what we're going to build today. 
 
-(https://github.com/CPLamb/WhirlyGlobe-Maply-Site/blob/gh-pages/images/tutorial/ArcGIS_Header.png)
+![Header pic](https://github.com/CPLamb/WhirlyGlobe-Maply-Site/blob/gh-pages/images/tutorial/ArcGIS_Header.png)
 
-You’ll need a sample project for this tutorial. Go back and start with the Hello Earth tutorial and work thru the [CartoDB Tutorial].  We’ll want the tiling logic from that tutorial.  If you'd rather just get started with those files, you can download them here;
+You’ll need a sample project for this tutorial. Go back and start with the Hello Earth tutorial and work thru the [CartoDB Tutorial](https://github.com/CPLamb/WhirlyGlobe-Maply-Site/blob/gh-pages/tutorial/remote_image_layer.md).  We’ll want the tiling logic from that tutorial.  If you'd rather just get started with those files, you can download them here;
 
-ViewController.m Your main view controller.
-CartoDBLayer.h CartoDBLayer header.
-CartoDBLayer.m CartoDBLayer implementation.
+[ViewController.m](https://github.com/CPLamb/WhirlyGlobe-Maply-Site/tree/gh-pages/tutorial/code/ViewController_cartodb.m) Your main view controller.
+[CartoDBLayer.h](https://github.com/CPLamb/WhirlyGlobe-Maply-Site/tree/gh-pages/tutorial/code/CartoDBLayer.h) CartoDBLayer header.
+[CartoDBLayer.m](https://github.com/CPLamb/WhirlyGlobe-Maply-Site/tree/gh-pages/tutorial/code/CartoDBLayer.m) CartoDBLayer implementation.
 
 ### Hello Earth
 OK to summarize, in this app we're are going to utilize remote datasets from ESRI's (that's the Environmental Systems Research Institute, I just finally learned) ArcGIS website.  ArcGIS is the premier GIS application out there, and it's used by everyone.  Check it out, join, whatever, but you'll have to do it on your own time.
@@ -24,7 +24,7 @@ And as a second act we are going to access one of their vector data sets showing
 
 As mentioned above, we're not going to get into much of the details of ArcGIS or how the Hello Earth vector tiling works, that's detailed elsewhere.  So, let's get setup.  I changed the CartoDB files to ArcGISLayer, and it's associated method to addVectors, just to be pedantic about it.  Run the app and you should get the CartoDB view of NYC's landlords or whatever.  If not, make it so.
 
-(https://github.com/CPLamb/WhirlyGlobe-Maply-Site/blob/gh-pages/images/tutorial/CartoDB_NYCBuildings.png)
+![CartoDB pic](https://github.com/CPLamb/WhirlyGlobe-Maply-Site/blob/gh-pages/images/tutorial/CartoDB_NYCBuildings.png)
 
 
 
