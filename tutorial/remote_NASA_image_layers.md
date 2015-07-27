@@ -10,7 +10,7 @@ NASA provides a wealth of image layers for free ''Steve adds the intro''.  These
 
 You'll need to have done the [Remote Image Layer](remote_image_layer.html) tutorial.  Open your HelloEarth project and get ready.
 
-![Xcode ViewController.m](https://github.com/CPLamb/WhirlyGlobe-Maply-Site/blob/gh-pages/images/tutorial/NASA_layers_header.png)
+![Xcode ViewController.m](https://github.com/CPLamb/WhirlyGlobe-Maply-Site/blob/gh-pages/images/tutorial/NASA_GIBS_header.png)
 
 If you haven't got one here is a suitable [ViewController.m]({{ site.baseurl }}/tutorial/code/ViewController_vector_selection.m) file to start with.  This version has a remote image layer already configured and it makes a nice starting point.
 
