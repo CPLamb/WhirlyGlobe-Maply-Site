@@ -83,13 +83,13 @@ cartoLayer.minZoom = 13;
 cartoLayer.maxZoom = 15;
 {% endhighlight %}
 
-outSR is the ouptpu spacial reference, and pgeojson also defines the output format.
+outSR is the ouptput spacial reference, and pgeojson also defines the output format.
 Run the project, and you should see the layers for the flood zones.  Not?  OK, lets adjust a few things to see what's going on;
 
-Change the mni/maxZoom levels = 9 to 13
-Modify the initial zoom level to 0.008
-query for a single zone>=4
-Also let's add in a NSLog statement to see if data is being returned
+- Change the mni/maxZoom levels = 9 to 13
+- Modify the initial zoom level to 0.008
+- query for a single zone>=4
+- Also let's add in a NSLog statement to see if data is being returned
 
 {% highlight objc %}
 [NSURLConnection sendAsynchronousRequest:urlReq queue:opQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
@@ -98,6 +98,9 @@ NSLog(@"returned data length is %lu", (unsigned long)data.length);
 {% endhighlight %}
 
 Run the project again, and you should see some data displayed.  It's not exactly what we want, but at least we know we're receiving data, Yay!  Now lets clean up this bad boy.
+ 
+- Color individual zones
+- Adjust zoom & position
 
 Through the magic of files fiddling, we finally end up with -
 
@@ -107,9 +110,9 @@ Very pretty.
 
 Here are the various completed files for your programming pleasure;
 
-[ViewController.m](https://github.com/CPLamb/WhirlyGlobe-Maply-Site/tree/gh-pages/tutorial/code/ViewController_ArcGIS.m)
-[ArcGISLayer.h](https://github.com/CPLamb/WhirlyGlobe-Maply-Site/tree/gh-pages/tutorial/code/ArcGISLayer.m)
-[ArcGISLayer.m](https://github.com/CPLamb/WhirlyGlobe-Maply-Site/tree/gh-pages/tutorial/code/ArcGISLayer.m)
+- [ViewController.m]({{ site.baseurl }}/tutorial/code/ViewController_ArcGIS.m)
+- [ArcGISLayer.h]({{ site.baseurl }}/tutorial/code/ArcGISLayer.m)
+- [ArcGISLayer.m]({{ site.baseurl }}/tutorial/code/ArcGISLayer.m)
 
 
 
