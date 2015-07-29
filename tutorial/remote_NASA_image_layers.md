@@ -14,11 +14,10 @@ You'll need to have done the [Remote Image Layer]({{ site.baseurl }}/remote_imag
 
 If you haven't got one here is a suitable [ViewController.m]({{ site.baseurl }}/tutorial/code/ViewController_vector_selection.m) file to start with.  This version has a remote image layer already configured and it makes a nice starting point.
 
-Let's start by explaining whatever????
+In this tutorial we are going to get a base layer map from the GIBS site, and then we will add an overlay layer to that globe.
+### NASA GIBS base layer tile sources  
 
-### NASA GIBS base layer tile sources
-
-All we need to do is replace the existing MaplyRemoteTileSource URL with one supplied thru the GIBS website.  Here are two URLs that provide a base layer for your Whirly Globe.
+All we need to do is replace the existing MaplyRemoteTileSource URL with one supplied thru the [GIBS website](https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products#expand-CorrectedReflectance5Products).  Here are two URLs that provide a base layer for your Whirly Globe.
 
 {% highlight bash %}
 http://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_CorrectedReflectance_TrueColor/default/2015-06-07/GoogleMapsCompatible_Level9/
@@ -28,7 +27,7 @@ http://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_CorrectedReflectance
 http://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default/2015-07-01/GoogleMapsCompatible_Level8/
 {% endhighlight %}
 
-Open ViewController.m. Now let's find where to add the image layer URL.  Scroll down thru viewDidLoad until you find the following code
+Open ViewController.m. Now let's find where to add the image layer URL.  Scroll down thru viewDidLoad until you find the following code for a MaplyRemoteTileSource;
 
 {% highlight objc %}
 // MapQuest Open Aerial Tiles, Courtesy Of Mapquest
@@ -43,7 +42,7 @@ Replace the initWithBaseURL property with one of the selections above.
 Also change ext with "jpg"
 And match the maxZoom with the level of the GoogleMapCompatible Level (8 or9)
 
-Run the project, and you should get a stunning NASA earth globe (or map?)
+Run the project, and you should get a stunning NASA earth globe.
 
 ### Adding an Overlay Layer
 
@@ -61,18 +60,16 @@ http://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_Land_Surface_Temp_Da
 http://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_Chlorophyll_A/default/2015-02-10/GoogleMapsCompatible_Level7/
 {% endhighlight %}
 
-
-Add this method
+Add this call to the bottom of viewDidLoad
 
 {% highlight objc %}
-@interface ViewController : UIViewController 
-                <WhirlyGlobeViewControllerDelegate,MaplyViewControllerDelegate>
+// Add overlay 
+[self addOverlay];
 {% endhighlight %}
 
-Now just add the addOverlay method  (It's some derivation of this)
+Now just add the addOverlay method.
 
 {% highlight objc %}
-­// CPL is roughing out code
 // Run through the overlays the user wants turned on
 - (void)addOverlay:(NSDictionary *)baseSettings
 {
