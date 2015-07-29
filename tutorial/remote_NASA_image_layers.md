@@ -15,6 +15,7 @@ You'll need to have done the [Remote Image Layer]({{ site.baseurl }}/remote_imag
 If you haven't got one here is a suitable [ViewController.m]({{ site.baseurl }}/tutorial/code/ViewController_vector_selection.m) file to start with.  This version has a remote image layer already configured and it makes a nice starting point.
 
 In this tutorial we are going to get a base layer map from the GIBS site, and then we will add an overlay layer to that globe.
+
 ### NASA GIBS base layer tile sources  
 
 All we need to do is replace the existing MaplyRemoteTileSource URL with one supplied thru the [GIBS website](https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products#expand-CorrectedReflectance5Products).  Here are two URLs that provide a base layer for your Whirly Globe.
@@ -38,11 +39,13 @@ MaplyRemoteTileSource *tileSource =
     ext:@"png" minZoom:0 maxZoom:maxZoom];
 {% endhighlight %}
 
-Replace the initWithBaseURL property with one of the selections above.
-Also change ext with "jpg"
-And match the maxZoom with the level of the GoogleMapCompatible Level (8 or9)
+- Replace the initWithBaseURL property with one of the selections above.
+- Also change ext with "jpg"
+- And match the maxZoom with the level of the GoogleMapCompatible Level (8 or9)
 
 Run the project, and you should get a stunning NASA earth globe.
+
+![NASA NightSky base map]({{ site.baseurl }}/images/tutorial/NASA_NightTime_Layer.png)
 
 ### Adding an Overlay Layer
 
@@ -60,56 +63,41 @@ http://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_Land_Surface_Temp_Da
 http://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_Chlorophyll_A/default/2015-02-10/GoogleMapsCompatible_Level7/
 {% endhighlight %}
 
-Add this call to the bottom of viewDidLoad
+Add this above viewDidLoad
 
 {% highlight objc %}
-// Add overlay 
-[self addOverlay];
+// Set these for different view options
+const bool DoOverlay = true;
 {% endhighlight %}
 
-Now just add the addOverlay method.
+Now just add this code to the bottom of ViewDidLoad, above the addCountries call.
 
 {% highlight objc %}
-// Run through the overlays the user wants turned on
-- (void)addOverlay:(NSDictionary *)baseSettings
+// Setup a remote overlay from NASA GIBS
+if (DoOverlay)
 {
 // For network paging layers, where we'll store temp files
 NSString *cacheDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)  objectAtIndex:0];
-NSString *thisCacheDir = nil;
 
-for (NSString *layerName in [baseSettings allKeys])
-{
-bool isOn = [baseSettings[layerName] boolValue];
-MaplyViewControllerLayer *layer = ovlLayers[layerName];
-// Need to create the layer
-if (isOn && !layer)
-{
-if (![layerName compare:kMaplyTestOWM])
-{
-MaplyRemoteTileSource *tileSource = [[MaplyRemoteTileSource alloc] initWithBaseURL:@"http://map1.vis.earthdata.nasa.gov/wmts-webmerc/Sea_Surface_Temp_Blended/default/2013-06-07/GoogleMapsCompatible_Level7/"
-ext:@"png" minZoom:1 maxZoom:7];
+MaplyRemoteTileSource *tileSource = [[MaplyRemoteTileSource alloc] initWithBaseURL:@"http://map1.vis.earthdata.nasa.gov/wmts-webmerc/Sea_Surface_Temp_Blended/default/2015-06-25/GoogleMapsCompatible_Level7/{z}/{y}/{x}" ext:@"png" minZoom:0 maxZoom:9];
 
-//             MaplyRemoteTileSource *tileSource = [[MaplyRemoteTileSource alloc] initWithBaseURL:@"http://tile.openweathermap.org/map/precipitation/" ext:@"png" minZoom:1 maxZoom:10];
+//     MaplyRemoteTileSource *tileSource = [[MaplyRemoteTileSource alloc] initWithBaseURL:@"http://tile.openweathermap.org/map/precipitation/" ext:@"png" minZoom:0 maxZoom:6];
 
-tileSource.cacheDir = [NSString stringWithFormat:@"%@/openweathermap_precipitation/",cacheDir];
-tileSource.tileInfo.cachedFileLifetime = 3 * 60 * 60; // invalidate OWM data after three hours
-MaplyQuadImageTilesLayer *weatherLayer = [[MaplyQuadImageTilesLayer alloc] initWithCoordSystem:tileSource.coordSys tileSource:tileSource];
-weatherLayer.coverPoles = false;
-weatherLayer.flipY = true;         // chopped tiles fix??
-layer = weatherLayer;
-weatherLayer.handleEdges = false;
-[baseViewC addLayer:weatherLayer];
-ovlLayers[layerName] = layer;
-} else if (!isOn && layer)
-{
-// Get rid of the layer
-[baseViewC removeLayer:layer];
-[ovlLayers removeObjectForKey:layerName];
-}
+tileSource.cacheDir = [NSString stringWithFormat:@"%@/sea_temperature/",cacheDir];
+
+tileSource.tileInfo.cachedFileLifetime = 3; // invalidate OWM data after three secs
+MaplyQuadImageTilesLayer *temperatureLayer = [[MaplyQuadImageTilesLayer alloc] initWithCoordSystem:tileSource.coordSys tileSource:tileSource];
+
+//       NSLog(@"The coordSystem is %@", tileSource.coordSys);
+
+temperatureLayer.coverPoles = false;
+temperatureLayer.handleEdges = false;
+[globeViewC addLayer:temperatureLayer];
+
 }
 {% endhighlight %}
 
-Next, find this code in addOverlay;
+Next, you can change the MaplyRemoteTileSource to any of the URLs provided above.
 
 {% highlight objc %}
 MaplyRemoteTileSource *tileSource = [[MaplyRemoteTileSource alloc] initWithBaseURL:@"http://map1.vis.earthdata.nasa.gov/wmts-webmerc/Sea_Surface_Temp_Blended/default/2013-06-07/GoogleMapsCompatible_Level7/"
@@ -119,17 +107,10 @@ ext:@"png" minZoom:1 maxZoom:7];
 Change the initWithBaseURL to any of the URLs listed above.
 And don't forget to match the maxZoom level
 
-just like in the first section replace the remoteTileSource URL with any one of the one listed above
-
-Add don't forget to add this to the bottom of viewDidLoad
-
-{% highlight bash %}
-// adds the layer
-[self addOverlay]
-{% endhighlight %}
-
 
 That's it! Build and run.  You should see some sweet NASA data! 
+
+![NASA Overlay Ocean Temp Layer]({{ site.baseurl }}/images/tutorial/NASA_SeaTemp_Overlay.png)
 
 ### Code Breakdown
 
