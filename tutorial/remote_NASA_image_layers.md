@@ -21,11 +21,16 @@ In this tutorial we are going to get a base layer map from the GIBS site, and th
 All we need to do is replace the existing MaplyRemoteTileSource URL with one supplied thru the [GIBS website](https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products#expand-CorrectedReflectance5Products).  Here are two URLs that provide a base layer for your Whirly Globe.
 
 {% highlight bash %}
-http://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_CorrectedReflectance_TrueColor/default/2015-06-07/GoogleMapsCompatible_Level9/
+http://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_CorrectedReflectance_TrueColor/default/2015-06-07/GoogleMapsCompatible_Level9/{z}/{y}/{x}
 {% endhighlight %}
 
 {% highlight bash %}
-http://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default/2015-07-01/GoogleMapsCompatible_Level8/
+http://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default/2015-07-01/GoogleMapsCompatible_Level8/{z}/{y}/{x}
+{% endhighlight %}
+Now let's decipher these URLs.  A reading of the [GIBS API reference](https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+API+for+Developers) shows that the string has the format;
+
+{% highlight bash %}
+http://map1.vis.earthdata.nasa.gov/{Projection}/{ProductName}/default/{Time}/{TileMatrixSet}/{ZoomLevel}/{TileRow}/{TileCol}.png
 {% endhighlight %}
 
 Open ViewController.m. Now let's find where to add the image layer URL.  Scroll down thru viewDidLoad until you find the following code for a MaplyRemoteTileSource;
@@ -40,7 +45,7 @@ MaplyRemoteTileSource *tileSource =
 {% endhighlight %}
 
 - Replace the initWithBaseURL property with one of the selections above.
-- Also change ext with "jpg"
+- Also change ext: to "jpg"
 - And match the maxZoom with the level of the GoogleMapCompatible Level (8 or9)
 
 Run the project, and you should get a stunning NASA earth globe.
@@ -66,7 +71,7 @@ http://map1.vis.earthdata.nasa.gov/wmts-webmerc/MODIS_Terra_Chlorophyll_A/defaul
 Add this above viewDidLoad
 
 {% highlight objc %}
-// Set these for different view options
+// Set this for different view options
 const bool DoOverlay = true;
 {% endhighlight %}
 
@@ -81,19 +86,14 @@ NSString *cacheDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSU
 
 MaplyRemoteTileSource *tileSource = [[MaplyRemoteTileSource alloc] initWithBaseURL:@"http://map1.vis.earthdata.nasa.gov/wmts-webmerc/Sea_Surface_Temp_Blended/default/2015-06-25/GoogleMapsCompatible_Level7/{z}/{y}/{x}" ext:@"png" minZoom:0 maxZoom:9];
 
-//     MaplyRemoteTileSource *tileSource = [[MaplyRemoteTileSource alloc] initWithBaseURL:@"http://tile.openweathermap.org/map/precipitation/" ext:@"png" minZoom:0 maxZoom:6];
-
 tileSource.cacheDir = [NSString stringWithFormat:@"%@/sea_temperature/",cacheDir];
 
 tileSource.tileInfo.cachedFileLifetime = 3; // invalidate OWM data after three secs
 MaplyQuadImageTilesLayer *temperatureLayer = [[MaplyQuadImageTilesLayer alloc] initWithCoordSystem:tileSource.coordSys tileSource:tileSource];
 
-//       NSLog(@"The coordSystem is %@", tileSource.coordSys);
-
 temperatureLayer.coverPoles = false;
 temperatureLayer.handleEdges = false;
 [globeViewC addLayer:temperatureLayer];
-
 }
 {% endhighlight %}
 
