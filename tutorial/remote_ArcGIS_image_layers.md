@@ -64,7 +64,7 @@ double toDeg = 180/M_PI;
 NSString *query = [NSString stringWithFormat:search,bbox.ll.x*toDeg,bbox.ll.y*toDeg,bbox.ur.x*toDeg,bbox.ur.y*toDeg];
 NSString *encodeQuery = [query stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 encodeQuery = [encodeQuery stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
-NSString *fullUrl = [NSString stringWithFormat:@"https://pluto.cartodb.com/api/v2/sql?format=GeoJSON&q=%@",encodeQuery];.
+NSString *fullUrl = [NSString stringWithFormat:@"https://neptune.blahblah.com/api/v2/sql?format=GeoJSON&q=%@",encodeQuery];.
 NSURLRequest *urlReq = [NSURLRequest requestWithURL:[NSURL URLWithString:fullUrl]];
 
 return urlReq;
@@ -79,9 +79,9 @@ And we'll also need to change the query in the ViewController's addBuildings met
 NSString *search = @"WHERE=Zone>=1&f=pgeojson&outSR=4326";
 // NSString *search = @"SELECT the_geom,address,ownername,numfloors FROM mn_mappluto_13v1 WHERE the_geom && ST_SetSRID(ST_MakeBox2D(ST_Point(%f, %f), ST_Point(%f, %f)), 4326) LIMIT 2000;";
 
-CartoDBLayer *cartoLayer = [[CartoDBLayer alloc] initWithSearch:search];
-cartoLayer.minZoom = 13;
-cartoLayer.maxZoom = 15;
+RemoteLayer *remoteLayer = [[RemoteLayer alloc] initWithSearch:search];
+remoteLayer.minZoom = 13;
+remoteLayer.maxZoom = 15;
 {% endhighlight %}
 
 outSR is the ouptput spacial reference, and pgeojson also defines the output format.
@@ -98,10 +98,12 @@ Run the project, and you should see the layers for the flood zones.  Not?  OK, l
 NSLog(@"returned data length is %lu", (unsigned long)data.length);
 {% endhighlight %}
 
-Run the project again, and you should see some data displayed.  It's not exactly what we want, but at least we know we're receiving data, Yay!  Now lets clean up this bad boy.
+Run the project again, and you should see some data displayed.  It's not exactly what we want, but at least we know we're receiving data, Yay!  
+ Now lets clean up this bad boy.
  
 - Color individual zones
 - Adjust zoom & position
+- Remove extraneous code
 
 Through the magic of files fiddling, we finally end up with -
 
