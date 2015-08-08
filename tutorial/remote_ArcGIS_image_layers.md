@@ -3,7 +3,7 @@ title: ArcGIS Layers
 layout: tutorial
 ---
 
-[ESRI's ArcGIS platform](http://www.esri.com/) has a huge number of datasets, as well as the ability to generate your own thru the ArcGIS application.  Here are a few examples of what we're going to build today. 
+[ESRI's ArcGIS platform](http://www.esri.com/) has a huge number of datasets, as well as the ability to generate your own thru the ArcGIS application.  In this tutorial we are going to access one of ESRI's base maps, as well as perform a query to build a vector layer.  Here are a few screen grabs of what we're going to build today. 
 
 ![Header pic]({{ site.baseurl }}/images/tutorial/ArcGIS_Header.png)
 
@@ -15,7 +15,7 @@ You’ll need a sample project for this tutorial. Go back and start with the [He
 
 
 ### Hello Earth
-OK to summarize, in this app we're are going to utilize remote datasets from ESRI's (that's the Environmental Systems Research Institute) [ArcGIS website](https://www.arcgis.com/features/).  ArcGIS is the premier GIS application out there, and it's used by everyone.  [Check it out](http://resources.arcgis.com/en/help/arcgis-rest-api/), join, whatever, but you'll have to do it on your own time.
+OK to summarize, in this tutorial we're are going to utilize remote datasets from ESRI's (that's the Environmental Systems Research Institute) [ArcGIS website](https://www.arcgis.com/features/).  ArcGIS is the premier GIS application out there, and it's used by everyone.  [Check it out](http://resources.arcgis.com/en/help/arcgis-rest-api/), join, whatever, but you'll have to do it on your own time.
 
 In this app, we are going to load one of their great base maps a National Geographic globe found in their list of base map REST services [here](http://services.arcgisonline.com/arcgis/rest/services).
 
