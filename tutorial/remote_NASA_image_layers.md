@@ -1,5 +1,5 @@
 ---
-title: Remote NASA Image Layers
+title: NASA Layers
 layout: tutorial
 ---
 
