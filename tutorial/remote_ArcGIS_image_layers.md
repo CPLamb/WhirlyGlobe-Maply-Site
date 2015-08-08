@@ -21,7 +21,7 @@ In this app, we are going to load one of their great base maps a National Geogra
 
 And as a second act we are going to access one of their vector data sets showing New York City's flood zones in a list of vector services found [here](http://services.arcgis.com/OfH668nDRN7tbJh0/ArcGIS/rest/services).
 
-As mentioned above, we're not going to get into much of the details of ArcGIS or how the Hello Earth vector tiling works, that's detailed elsewhere.  So, let's get setup.  I changed the RemoteLayer class files to ArcGISLayer, and it's associated method to addVectors, just to be pedantic about it.  Run the app and you should get a vector layer view of NYC's landlords or whatever.  If not, make it so.
+As mentioned above, we're not going to get into much of the details of ArcGIS or how the Hello Earth vector tiling works, that's detailed elsewhere.  So, let's get setup.  I changed the RemoteLayer class files to ArcGISLayer, and changed the addBuildings method to addVectorLayer, just to be pedantic about it.  Run the app and you should get a vector layer view of NYC's landlords or whatever.  If not, make it so.
 
 ![Vector layer pic]({{ site.baseurl }}/images/tutorial/CartoDB_NYCBuildings.png)
 
@@ -36,7 +36,7 @@ ext:@"png" minZoom:0 maxZoom:maxZoom];
 {% endhighlight %}
 
 {% highlight bash %}
-http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer
+http://services.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}
 {% endhighlight %}
 
 you also need to adjust the maxZoom value (in this case - 17) and make sure the ext:file is png.  The /tile/{z}/{y}/{x} string appended to the end of the URL ensures proper tiling orientation.
@@ -49,10 +49,10 @@ Easy Peasey!
 ### Next up - Vector Layers
 Vector layers are datasets that return polygons, attributes and other things.  The mechanics of how WhirlyGlobe handles this data is thoroughly detailed in the Vector Data tutorial, and you should review that there if you like.  Here today we are simply going to replace the vector data with data from ArcGIS, specifically showing the various different flood zones in the NYC area.  We'll also make a few other changes to make the displayed data pop!  Here goes;
 
-As discussed, we have created a RemoteLayer object that conforms to the MaplyPagingDelegate.  This object then queries the remote data source for the data required by the tiles displayed with the method startFetchForTile:forLayer:.  This query is comprised of 2 portions, a URL for the remote server, and a SQL query that are joined together in the constructRequest method.  Let's start by changing the URL to -
+As discussed, we have created a RemoteLayer object that conforms to the MaplyPagingDelegate.  This object then queries the remote data source for the data required by the tiles displayed with the method startFetchForTile:forLayer:.  This query is comprised of 2 portions, a URL for the remote server, and a SQL query that are joined together in the constructRequest method.  Let's start by changing the URL string to -
 
 {% highlight bash %}
-http://services.arcgis.com/OfH668nDRN7tbJh0/ArcGIS/rest/services/NYCEvacZones2013/FeatureServer
+http://services.arcgis.com/OfH668nDRN7tbJh0/ArcGIS/rest/services/NYCEvacZones2013/FeatureServer/0/query?%@
 {% endhighlight %}
 
 in the RemoteLayer constructRequest code.
@@ -66,15 +66,19 @@ NSString *encodeQuery = [query stringByAddingPercentEscapesUsingEncoding:NSUTF8S
 encodeQuery = [encodeQuery stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
 NSString *fullUrl = [NSString stringWithFormat:@"https://neptune.blahblah.com/api/v2/sql?format=GeoJSON&q=%@",encodeQuery];.
 NSURLRequest *urlReq = [NSURLRequest requestWithURL:[NSURL URLWithString:fullUrl]];
-
 return urlReq;
 }
 {% endhighlight %}
 
-And we'll also need to change the query in the ViewController's addBuildings method
+we also need to comment out this formatting line in the above method
+{% highlight objc %}
+//encodeQuery = [encodeQuery stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
+{% endhighlight %}
+
+And we'll also need to change the query in the ViewController's addVectorLayer method
 
 {% highlight objc %}
-- (void)addBuildings
+- (void)addVectorLayer
 {
 NSString *search = @"WHERE=Zone>=1&f=pgeojson&outSR=4326";
 // NSString *search = @"SELECT the_geom,address,ownername,numfloors FROM mn_mappluto_13v1 WHERE the_geom && ST_SetSRID(ST_MakeBox2D(ST_Point(%f, %f), ST_Point(%f, %f)), 4326) LIMIT 2000;";
@@ -90,7 +94,7 @@ Run the project, and you should see the layers for the flood zones.  Not?  OK, l
 - Change the mni/maxZoom levels = 9 to 13
 - Modify the initial zoom level to 0.008
 - query for a single zone>=4
-- Also let's add in a NSLog statement to see if data is being returned
+- Also let's add in a NSLog statement in the StartFetchForTile method in RemoteLayer to see if data is being returned
 
 {% highlight objc %}
 [NSURLConnection sendAsynchronousRequest:urlReq queue:opQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
@@ -114,7 +118,7 @@ Very pretty.
 Here are the various completed files for your programming pleasure;
 
 - [ViewController.m]({{ site.baseurl }}/tutorial/code/ViewController_ArcGIS.m)
-- [ArcGISLayer.h]({{ site.baseurl }}/tutorial/code/ArcGISLayer.m)
+- [ArcGISLayer.h]({{ site.baseurl }}/tutorial/code/ArcGISLayer.h)
 - [ArcGISLayer.m]({{ site.baseurl }}/tutorial/code/ArcGISLayer.m)
 
 
